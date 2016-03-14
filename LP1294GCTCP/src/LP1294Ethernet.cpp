@@ -106,12 +106,15 @@ static bool
 	LinkDown,
 	Initialised = false;
 
-#if 0
+#ifdef STATIC_BUFFERS
 #define BUFFER_SIZE ( ipTOTAL_ETHERNET_FRAME_SIZE + ipBUFFER_PADDING )
 #define BUFFER_SIZE_ROUNDED_UP ( ( BUFFER_SIZE + 7 ) & ~0x07UL )
 
 uint8_t
 	Buffers[ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS][BUFFER_SIZE_ROUNDED_UP];
+
+void vNetworkInterfaceAllocateRAMToBuffers(
+    NetworkBufferDescriptor_t pxNetworkBuffers[ ipconfigNUM_NETWORK_BUFFERS ] );
 #endif
 
 
@@ -380,6 +383,19 @@ uint32_t GetEMACStatus(void)
 	return(EMACIntStatus(EMAC0_BASE,true));
 }
 
+#ifdef STATIC_BUFFERS
+void vNetworkInterfaceAllocateRAMToBuffers(NetworkBufferDescriptor_t pxNetworkBuffers[ipconfigNUM_NETWORK_BUFFERS])
+{
+	for (int x = 0; x < ipconfigNUM_NETWORK_BUFFERS; x++)
+	{
+		// set the buffer point to point past the padding area
+		pxNetworkBufferx[x].pucEthernetBffer = &(Buffers[x][ipBUFFER_PADDING]);
+		// set the pointer with the buffer back to the NetworkBuffer
+		*((unit32_t)&Buffers[x][0]) = (uint32_t)&(pxNetworkBuffer[x]);
+	}
+}
+#endif
+
 BaseType_t xNetworkInterfaceInitialise( void )
 {
 	if (InitialiseEthernet())
@@ -388,26 +404,7 @@ BaseType_t xNetworkInterfaceInitialise( void )
 		return(pdPASS);
 }
 
-#if 0 // used with BufferAllocation1 model
-void vNetworkInterfaceAllocateRAMToBuffers(
-    NetworkBufferDescriptor_t pxNetworkBuffers[ ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS ] )
-{
-	BaseType_t
-		x;
 
-    for( x = 0; x < ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS; x++ )
-    {
-        /* pucEthernetBuffer is set to point ipBUFFER_PADDING bytes in from the
-        beginning of the allocated buffer. */
-        pxNetworkBuffers[ x ].pucEthernetBuffer = &( Buffers[ x ][ ipBUFFER_PADDING ] );
-
-        /* The following line is also required, but will not be required in
-        future versions. */
-        *( ( uint32_t * ) &Buffers[ x ][ 0 ] ) = ( uint32_t ) &( pxNetworkBuffers[ x ] );
-    }
-}
-
-#endif
 
 static EMACIODescriptor *GetNextTxDescriptor(void)
 {

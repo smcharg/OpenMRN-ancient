@@ -31,7 +31,7 @@
 
 #include "FreeRTOSConfig.h"
 
-//#include "UART.h"
+#include "UART.h"
 //#include "ethernet.h"
 
 //#define configCPU_CLOCK_HZ	120000000
@@ -68,13 +68,13 @@ void hw_preinit(void)
     MAP_GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_0);
     MAP_GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0, 0);
 
-    // uart0 set up
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-    MAP_GPIOPinConfigure(GPIO_PA0_U0RX);
-    MAP_GPIOPinConfigure(GPIO_PA1_U0TX);
-    MAP_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0);
-    MAP_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_1);
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+    // uart2 set up
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
+    MAP_GPIOPinConfigure(GPIO_PD4_U2RX);
+    MAP_GPIOPinConfigure(GPIO_PD5_U2TX);
+    MAP_GPIOPinTypeUART(GPIO_PORTD_BASE, GPIO_PIN_4);
+    MAP_GPIOPinTypeUART(GPIO_PORTD_BASE, GPIO_PIN_5);
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART2);
 
     // Blinker timer initialization.
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER5);
@@ -145,12 +145,27 @@ void hw_set_to_safe(void)
 	return;
 }
 
-#if 0
+
 void uart0_interrupt_handler(void)
 {
 	UART::Interrupt_Handler(0);
 }
-#endif
+
+void uart1_interrupt_handler(void)
+{
+	UART::Interrupt_Handler(1);
+}
+
+void uart2_interrupt_handler(void)
+{
+	UART::Interrupt_Handler(2);
+}
+
+void uart3_interrupt_handler(void)
+{
+	UART::Interrupt_Handler(3);
+}
+
 
 }
 
