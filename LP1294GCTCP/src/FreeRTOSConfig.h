@@ -92,7 +92,7 @@
 
 #define configCPU_CLOCK_HZ             ( cm3_cpu_clock_hz )
 #define configMINIMAL_STACK_SIZE       ( ( unsigned short ) 256 )
-#define configTOTAL_HEAP_SIZE          ( ( size_t ) ( 100000 ) )
+#define configTOTAL_HEAP_SIZE          ( ( size_t ) ( 50000 ))
 #define configTIMER_TASK_STACK_DEPTH   256
 
 #define configKERNEL_INTERRUPT_PRIORITY         255

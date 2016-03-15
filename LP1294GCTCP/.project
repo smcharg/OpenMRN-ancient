@@ -26,11 +26,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src/BufferAllocation_2.c</name>
-			<type>1</type>
-			<location>/Users/sid/FreeRTOS_Labs_160112/FreeRTOS-Plus/Source/FreeRTOS-Plus-TCP/portable/BufferManagement/BufferAllocation_2.c</location>
-		</link>
-		<link>
 			<name>src/FreeRTOS_ARP.c</name>
 			<type>1</type>
 			<location>/Users/sid/FreeRTOS_Labs_160112/FreeRTOS-Plus/Source/FreeRTOS-Plus-TCP/FreeRTOS_ARP.c</location>

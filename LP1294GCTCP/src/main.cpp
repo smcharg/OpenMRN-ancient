@@ -6,7 +6,7 @@
 // Description : Hello World in C++
 //============================================================================
 
-#define VERSION		"0.01"
+#define VERSION		"0.02"
 
 #include <new>
 #include <stdio.h>
@@ -18,6 +18,7 @@
 
 #include "FreeRTOS_IP.h"
 #include "FreeRTOS_sockets.h"
+#include "LP1294Ethernet.h"
 
 #include "inc/hw_flash.h"
 #include "driverlib/flash.h"
@@ -283,6 +284,12 @@ void vNetworking(void *Param)
 extern "C" int main(int argc, char *argv[])
 {
 	printf(HEADING);
+#ifdef STATIC_BUFFERS
+	printf("Networking buffers statically allocated\n");
+#else
+	printf("Networking buffers dynamically allocated\n");
+#endif
+
 	xTaskCreate(vNetworking, "Networking", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, NULL);
 	//xTaskCreate(vServerTask, "ServerTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &xServerTask);
 	vTaskStartScheduler();

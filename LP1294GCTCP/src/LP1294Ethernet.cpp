@@ -114,7 +114,7 @@ uint8_t
 	Buffers[ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS][BUFFER_SIZE_ROUNDED_UP];
 
 void vNetworkInterfaceAllocateRAMToBuffers(
-    NetworkBufferDescriptor_t pxNetworkBuffers[ ipconfigNUM_NETWORK_BUFFERS ] );
+    NetworkBufferDescriptor_t pxNetworkBuffers[ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS]);
 #endif
 
 
@@ -376,22 +376,15 @@ static bool InitialiseEthernet(void)
     return(false);
 }
 
-
-
-uint32_t GetEMACStatus(void)
-{
-	return(EMACIntStatus(EMAC0_BASE,true));
-}
-
 #ifdef STATIC_BUFFERS
-void vNetworkInterfaceAllocateRAMToBuffers(NetworkBufferDescriptor_t pxNetworkBuffers[ipconfigNUM_NETWORK_BUFFERS])
+void vNetworkInterfaceAllocateRAMToBuffers(NetworkBufferDescriptor_t pxNetworkBuffers[ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS])
 {
-	for (int x = 0; x < ipconfigNUM_NETWORK_BUFFERS; x++)
+	for (int x = 0; x < ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS; x++)
 	{
 		// set the buffer point to point past the padding area
-		pxNetworkBufferx[x].pucEthernetBffer = &(Buffers[x][ipBUFFER_PADDING]);
+		pxNetworkBuffers[x].pucEthernetBuffer = &(Buffers[x][ipBUFFER_PADDING]);
 		// set the pointer with the buffer back to the NetworkBuffer
-		*((unit32_t)&Buffers[x][0]) = (uint32_t)&(pxNetworkBuffer[x]);
+		*((uint32_t *)&Buffers[x][0]) = (uint32_t)&(pxNetworkBuffers[x]);
 	}
 }
 #endif

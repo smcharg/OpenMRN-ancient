@@ -8,7 +8,7 @@
 #ifdef STATIC_BUFFERS
 #include "BufferAllocation_1.c"
 #else
-//#include "BufferAllocation_2.c"
+#include "BufferAllocation_2.c"
 #endif
 
 

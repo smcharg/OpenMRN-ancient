@@ -8,7 +8,6 @@
 #ifndef LP1294ETHERNET_H_
 #define LP1294ETHERNET_H_
 
-uint32_t GetEMACStatus();
-
+#define STATIC_BUFFERS
 
 #endif /* LP1294ETHERNET_H_ */
